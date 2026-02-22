@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="google928aa317ce833dec" />
+    
     <title>FryLabs Studio | Systems Engineering</title>
     
     <!-- Google Fonts -->
@@ -121,7 +124,6 @@
 
         .theme-toggle svg {
             position: absolute; width: 22px; height: 22px;
-            /* Cubic bezier gives it the ultra-smooth "spring bounce" effect */
             transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
         }
         
@@ -301,11 +303,11 @@
         .form-group-modern { width: 100%; margin-bottom: 1.5rem; }
         .form-row .form-group-modern { margin-bottom: 0; }
         .form-label { display: block; font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.6rem; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .form-control-modern { width: 100%; padding: 1.1rem 1.25rem; font-size: 1rem; background: #f4f4f5; border: 2px solid transparent; border-radius: 14px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; color: #0f172a; }
+        .form-control-modern { width: 100%; padding: 1.1rem 1.25rem; font-size: 1rem; background: #f4f4f5; border: 2px solid transparent; border-radius: 14px; font-family: inherit; color: #0f172a; }
         .form-control-modern::placeholder { color: #9ca3af; font-weight: 400; }
         .form-control-modern:focus { outline: none; background-color: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); }
         textarea.form-control-modern { min-height: 150px; resize: none !important; }
-        .btn-gradient { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; border: none; padding: 1.25rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); }
+        .btn-gradient { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; border: none; padding: 1.25rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); }
         .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(124, 58, 237, 0.4); }
 
         /* Toast System */
@@ -423,15 +425,15 @@
                 <a href="#contact">Contact</a>
             </div>
             
-            <!-- Dynamic Spring-Animated Night Toggle Button -->
+            <!-- Premium Dynamic Spring-Animated Night Toggle Button -->
             <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
-                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line>
                     <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
                     <line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line>
                     <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
-                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
             </button>
@@ -506,7 +508,7 @@
         </div>
     </section>
 
-    <!-- Roadmap Section (Dynamically Injected) -->
+    <!-- Roadmap Section -->
     <section id="status">
         <h2 class="section-title fade-up">Development Roadmap</h2>
         <div class="timeline" id="roadmap-container">
@@ -694,7 +696,6 @@
             const container = document.getElementById('roadmap-container');
             container.innerHTML = '';
             
-            // Sort by id to ensure order
             roadmapState.sort((a,b) => a.id - b.id).forEach((phase, index) => {
                 const delay = index * 0.1;
                 const dotClass = phase.status === 'active' ? 'active' : phase.status === 'completed' ? 'completed' : 'upcoming';
@@ -718,7 +719,6 @@
                 `;
             });
 
-            // Re-trigger fade-up observer for new elements
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
             }, { threshold: 0.15 });
@@ -741,8 +741,6 @@
                             await signInAnonymously(auth);
                         }
                     } catch (authError) {
-                        // Token mismatch occurs because the environment's auth token is for a different Firebase project.
-                        // Silently fallback to anonymous auth to prevent console errors from triggering UI alerts.
                         try {
                             await signInAnonymously(auth);
                         } catch (anonError) {
@@ -764,8 +762,7 @@
                 renderRoadmap();
             }
         } else {
-            console.log("Using Local In-Memory Fallback mode. Add Firebase config to sync globally.");
-            renderRoadmap(); // Render local state
+            renderRoadmap(); 
         }
 
         function setupDatabaseListener() {
@@ -779,7 +776,6 @@
                     roadmapState = dbData;
                     renderRoadmap();
                 } else {
-                    // Seed initial data if empty
                     roadmapState.forEach(async (phase) => {
                         await setDoc(doc(roadmapCol, phase.id.toString()), phase);
                     });
@@ -793,12 +789,11 @@
         // --- THEME TOGGLE LOGIC ---
         const themeToggleBtn = document.getElementById('themeToggle');
         
-        // Force Dark Mode by default unless user explicitly opted out previously
+        // Permanent Default Dark Mode
         const savedTheme = localStorage.getItem('frylabs-theme');
         if (savedTheme === 'light') {
             document.body.classList.remove('dark');
         } else {
-            // Default to dark mode if no setting exists
             document.body.classList.add('dark');
         }
 
@@ -815,7 +810,6 @@
             if(adminClicks >= 5) {
                 adminClicks = 0;
                 const pwd = prompt("System Access: Enter Credentials");
-                // Base64 encoded password to hide it from plain text source
                 if(pwd && btoa(pwd) === 'RnJ5TGFic0FiaGlAMDY=') {
                     window.openAdmin();
                 } else if (pwd !== null) {
@@ -826,7 +820,6 @@
         });
 
         window.openAdmin = function() {
-            // Dynamically inject the admin HTML so it doesn't exist in the source code initially
             if (!document.getElementById('adminOverlay')) {
                 const adminHTML = `
                 <div class="admin-overlay active" id="adminOverlay" onclick="if(event.target === this) window.closeAdmin()">
@@ -854,23 +847,23 @@
                             </div>
                             <div class="admin-form-group">
                                 <label class="admin-label">Badge Text</label>
-                                <input type="text" class="admin-input" id="adminBadge" placeholder="e.g. Active: Foundation Stage">
+                                <input type="text" class="admin-input" id="adminBadge">
                             </div>
                         </div>
 
                         <div class="admin-form-group">
                             <label class="admin-label">Phase Title</label>
-                            <input type="text" class="admin-input" id="adminTitle" placeholder="e.g. Phase 0: Boot Validation">
+                            <input type="text" class="admin-input" id="adminTitle">
                         </div>
 
                         <div class="admin-form-group">
                             <label class="admin-label">Description</label>
-                            <textarea class="admin-textarea" id="adminDesc" style="min-height: 80px;" placeholder="Phase description..."></textarea>
+                            <textarea class="admin-textarea" id="adminDesc" style="min-height: 80px;"></textarea>
                         </div>
 
                         <div class="admin-form-group">
                             <label class="admin-label">Terminal Logs (Line Separated)</label>
-                            <textarea class="admin-textarea" id="adminTerminal" placeholder="prompt|root@frylabs:~$ |./fetch.sh&#10;log|[sys] Init...&#10;warn|[ERR] Missing IDT&#10;info|>>> STATUS: ACTIVE"></textarea>
+                            <textarea class="admin-textarea" id="adminTerminal"></textarea>
                             <span class="admin-help">Format: <code>type|text|command</code>. Types: prompt, log, warn, info.</span>
                         </div>
 
@@ -906,7 +899,6 @@
             document.getElementById('adminTitle').value = phase.title;
             document.getElementById('adminDesc').value = phase.description;
             
-            // Format terminal string
             document.getElementById('adminTerminal').value = phase.terminal.map(t => {
                 if(t.type === 'prompt') return `${t.type}|${t.text}|${t.cmd}`;
                 return `${t.type}|${t.text}`;
@@ -917,7 +909,6 @@
             const id = parseInt(document.getElementById('adminPhaseSelect').value);
             const termText = document.getElementById('adminTerminal').value;
             
-            // Parse terminal lines safely
             const terminalArr = termText.split('\n').filter(l => l.trim().length > 0).map(line => {
                 const parts = line.split('|');
                 if(parts[0] === 'prompt') return { type: 'prompt', text: parts[1] || '', cmd: parts[2] || '' };
@@ -933,24 +924,20 @@
                 terminal: terminalArr
             };
 
-            // Update Local State
             const index = roadmapState.findIndex(p => p.id === id);
             if(index !== -1) roadmapState[index] = updatedPhase;
 
-            // Sync to Firestore if active
             if (isFirebaseActive && userObj) {
                 try {
                     const phaseDoc = doc(db, 'artifacts', appId, 'public', 'data', 'roadmap', id.toString());
                     await setDoc(phaseDoc, updatedPhase);
-                    window.showToast("System State Synced Successfully", "success");
+                    window.showToast("System State Synced", "success");
                 } catch (e) {
-                    console.error(e);
-                    window.showToast("Database Sync Failed", "error");
+                    window.showToast("Sync Failed", "error");
                 }
             } else {
-                // Just re-render locally
                 renderRoadmap();
-                window.showToast("Saved Locally (In-Memory)", "success");
+                window.showToast("Saved Locally", "success");
             }
             window.closeAdmin();
         };
@@ -1010,8 +997,8 @@
                     
                 } else {
                     let colorStr = '';
-                    if (lineData.type === 'warn') colorStr = 'color: #eab308;'; // yellow
-                    if (lineData.type === 'info') colorStr = 'color: #3b82f6; font-weight: 600;'; // blue
+                    if (lineData.type === 'warn') colorStr = 'color: #eab308;'; 
+                    if (lineData.type === 'info') colorStr = 'color: #3b82f6; font-weight: 600;'; 
                     
                     lineEl.innerHTML = `<span style="${colorStr}">${lineData.text}</span>`;
                     body.appendChild(lineEl);
