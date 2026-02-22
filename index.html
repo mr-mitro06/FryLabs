@@ -5,38 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FryLabs Studio | Systems Engineering</title>
     
-    <!-- Google Fonts: Plus Jakarta Sans for Headers/Buttons, Inter for Body text, Playfair Display for the bold Contact heading -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Preload critical images for perceived performance -->
+    <!-- Preload critical images -->
     <link rel="preload" as="image" href="frylabs-logo.png">
     <link rel="preload" as="image" href="frisp-os-preview.png">
     
     <style>
         /* Modern Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 120px; /* Adjusted to account for the dynamic navbar */
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: 120px; overflow-x: hidden; width: 100%; }
         body {
             font-family: 'Inter', -apple-system, sans-serif;
             background-color: #fafafa;
             color: #111111;
             line-height: 1.6;
             overflow-x: hidden;
+            width: 100%;
             position: relative;
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3, .logo, .btn, .nav-links a, .power-statement, .toast-popup {
+        h1, h2, h3, .logo, .btn, .nav-links a, .power-statement, .contact-heading {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
@@ -44,19 +37,19 @@
         .blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
+            filter: blur(90px);
             z-index: -1;
-            opacity: 0.6;
-            animation: float 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.5;
+            animation: float 14s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform;
         }
-
-        .blob-1 { top: 5%; left: -10%; width: 50vw; height: 50vw; max-width: 500px; max-height: 500px; background: #e2e8f0; }
-        .blob-2 { top: 40%; right: -10%; width: 60vw; height: 60vw; max-width: 600px; max-height: 600px; background: #f1f5f9; animation-delay: -5s; }
-        .blob-3 { bottom: 5%; left: 15%; width: 45vw; height: 45vw; max-width: 450px; max-height: 450px; background: #eef2f6; animation-duration: 12s; }
+        .blob-1 { top: 5%; left: -10%; width: 50vw; height: 50vw; max-width: 500px; max-height: 500px; background: #dbeafe; opacity: 0.6; }
+        .blob-2 { top: 40%; right: -10%; width: 60vw; height: 60vw; max-width: 600px; max-height: 600px; background: #e0e7ff; animation-delay: -5s; opacity: 0.5; }
+        .blob-3 { bottom: 5%; left: 15%; width: 45vw; height: 45vw; max-width: 450px; max-height: 450px; background: #bfdbfe; animation-duration: 18s; opacity: 0.4; }
 
         @keyframes float {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-30px) scale(1.05); }
+            0% { transform: translateY(0) scale(1) rotate(0deg); }
+            100% { transform: translateY(-30px) scale(1.05) rotate(5deg); }
         }
 
         /* Animation */
@@ -66,513 +59,266 @@
             transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform, opacity;
         }
-        .fade-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
 
         /* Glassmorphic Navigation */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 5%; position: fixed; width: 100%; top: 0;
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-
         nav.scrolled {
-            background: rgba(255,255,255,0.85);
-            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
-            padding: 0.75rem 5%; /* Tighten padding slightly when scrolled */
+            background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 30px rgba(0,0,0,0.04);
+            padding: 0.8rem 5%; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
-        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; transition: opacity 0.3s ease; z-index: 1002; }
+        .logo { display: flex; align-items: center; text-decoration: none; transition: opacity 0.3s ease; z-index: 1002; }
         .logo:hover { opacity: 0.7; }
-        
-        /* DYNAMIC LOGO SIZING */
-        .logo img { 
-            height: 120px; /* Much bigger initial size */
-            width: auto; 
-            display: block; 
-            mix-blend-mode: multiply; 
-            transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
-        }
-        
-        /* Shrink logo when scrolling down to save screen space */
-        nav.scrolled .logo img { 
-            height: 75px; 
-        }
+        .logo img { height: 44px; width: auto; display: block; mix-blend-mode: multiply; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        nav.scrolled .logo img { height: 36px; }
 
         .nav-links { display: flex; gap: 2.5rem; align-items: center; }
         .nav-links a {
-            text-decoration: none;
-            color: #111;
-            font-weight: 500;
-            font-size: 0.95rem;
-            position: relative;
+            text-decoration: none; color: #374151; font-weight: 600; font-size: 0.95rem;
+            position: relative; transition: color 0.3s ease;
         }
+        .nav-links a:hover { color: #000; }
         .nav-links a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #111; transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #4f46e5; transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .nav-links a:hover::after { width: 100%; }
 
         /* Mobile Hamburger Menu */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 6px;
-            z-index: 1002;
-        }
-        .bar {
-            width: 25px;
-            height: 2px;
-            background-color: #111;
-            transition: all 0.3s ease;
-            transform-origin: left center;
-        }
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 6px; z-index: 1002; }
+        .bar { width: 25px; height: 2px; background-color: #111; transition: all 0.3s ease; transform-origin: left center; }
 
         /* Hero Section */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 5%;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            align-items: center; text-align: center; padding: 120px 5% 60px;
         }
-
         .hero h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -2px;
-            margin-bottom: 1rem;
-            max-width: 900px;
+            font-size: clamp(3.2rem, 7.5vw, 6rem); font-weight: 800; line-height: 1.05;
+            letter-spacing: -2px; margin: 0 auto 1.5rem auto; max-width: 1000px;
+            color: #0f172a; text-wrap: balance; 
         }
-
         .hero .power-statement {
-            font-size: clamp(1.1rem, 2vw, 1.25rem);
-            color: #444;
-            max-width: 700px;
-            margin-bottom: 2.5rem;
-            line-height: 1.6;
+            font-size: clamp(1.15rem, 2.5vw, 1.35rem); color: #475569; max-width: 750px;
+            margin: 0 auto 2.5rem auto; line-height: 1.6; text-wrap: balance;
         }
 
         .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background-color: #111;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid #111;
-            font-size: 1rem;
-            cursor: pointer;
+            display: inline-block; padding: 1.1rem 2.8rem; background-color: #0f172a;
+            color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid #0f172a;
+            font-size: 1.05rem; cursor: pointer; box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
         }
-        .btn:hover { background-color: #fff; color: #111; transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+        .btn:hover { background-color: #fff; color: #0f172a; transform: translateY(-4px); box-shadow: 0 12px 24px rgba(15, 23, 42, 0.15); }
 
         /* General Section Styles */
-        section:not(.hero) {
-            padding: 5.5rem 5%; 
-            position: relative;
-            z-index: 1;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
+        section:not(.hero) { padding: 6.5rem 5%; position: relative; z-index: 1; border-top: 1px solid rgba(0,0,0,0.05); }
+        .section-title { text-align: center; font-size: clamp(2.2rem, 4.5vw, 3rem); margin-bottom: 4rem; font-weight: 800; letter-spacing: -1.5px; color: #0f172a; }
 
-        .section-title {
-            text-align: center;
-            font-size: clamp(2rem, 4vw, 2.5rem);
-            margin-bottom: 3.5rem; 
-            font-weight: 800;
-            letter-spacing: -1px;
+        /* DYNAMIC HOVER CARDS */
+        .dynamic-card {
+            background: #ffffff; border: 1px solid #f1f5f9; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            border-radius: 24px; padding: 2.5rem; width: 100%; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, box-shadow, border-color;
         }
-
-        /* Glassmorphic Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid #ffffff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
-            border-radius: 24px;
-            padding: 2.5rem; 
-            width: 100%;
-            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: transform;
-        }
+        .dynamic-card:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15); border-color: rgba(99, 102, 241, 0.2); }
 
         /* Projects Section */
-        .project-card {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: left;
-            background: #ffffff; 
-        }
-        .project-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06); }
-        
-        .project-header-top {
-            display: flex;
-            align-items: center;
-            gap: 1.25rem;
-            margin-bottom: 1.25rem;
-        }
-        
-        /* STRICTLY CONTROLLED LOGO BOX */
+        .project-card { max-width: 850px; margin: 0 auto; text-align: left; }
+        .project-header-top { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem; }
         .project-logo-box {
-            width: 72px; 
-            height: 72px;
-            background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
-            flex-shrink: 0;
-            padding: 0;
+            width: 72px; height: 72px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 18px;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            flex-shrink: 0; padding: 0;
         }
+        .project-logo-box img { width: 34px; height: 34px; object-fit: contain; mix-blend-mode: multiply; }
         
-        .project-logo-box img {
-            width: 32px; 
-            height: 32px; 
-            object-fit: contain;
-            mix-blend-mode: multiply;
-            /* Reset transition and height override for this specific img */
-            transition: none;
-        }
-        nav.scrolled .project-logo-box img { height: 32px; }
-        
-        .project-title-wrapper {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .project-title-wrapper h3 { 
-            font-size: 1.6rem; 
-            font-weight: 800; 
-            margin: 0;
-            line-height: 1;
-            letter-spacing: -0.5px;
-        }
-        
-        .project-desc { 
-            font-size: 1.05rem; 
-            color: #555; 
-            margin-bottom: 1.5rem; 
-            line-height: 1.6; 
-        }
+        .project-title-wrapper { display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .project-title-wrapper h3 { font-size: 1.75rem; font-weight: 800; margin: 0; line-height: 1; letter-spacing: -0.5px; color: #0f172a; }
+        .project-desc { font-size: 1.1rem; color: #475569; margin-bottom: 1.8rem; line-height: 1.7; }
 
         .badge {
-            display: inline-block;
-            padding: 0.35rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 0;
+            display: inline-block; padding: 0.35rem 0.8rem; border-radius: 50px; font-size: 0.7rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin: 0;
         }
         .badge.active { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
         
-        .tech-stack {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
+        .tech-stack { display: flex; gap: 0.6rem; flex-wrap: wrap; }
         .tech-pill {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 0.3rem 0.8rem;
-            border-radius: 6px; 
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #475569;
-            transition: all 0.2s ease;
+            background: #f8fafc; border: 1px solid #e2e8f0; padding: 0.4rem 0.9rem; border-radius: 8px; 
+            font-size: 0.85rem; font-weight: 600; color: #475569; transition: all 0.2s ease;
         }
-        .tech-pill:hover { border-color: #94a3b8; color: #0f172a; }
+        .dynamic-card:hover .tech-pill { border-color: #cbd5e1; }
 
         /* Features Section */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 2rem;
-            max-width: 1000px; 
-            margin: 0 auto;
-        }
-
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 1050px; margin: 0 auto; }
         .feature-card .icon {
-            width: 48px; height: 48px; background: #111; color: #fff; border-radius: 12px;
+            width: 52px; height: 52px; background: #0f172a; color: #fff; border-radius: 14px;
             display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+            box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .feature-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
-        .feature-card p { color: #555; font-size: 0.95rem; line-height: 1.6; }
+        .dynamic-card:hover .icon { transform: scale(1.1); }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 0.75rem; color: #0f172a; }
+        .feature-card p { color: #475569; font-size: 1rem; line-height: 1.65; }
 
         /* Roadmap Timeline */
-        .timeline { max-width: 800px; margin: 0 auto; position: relative; }
-        .timeline::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 24px; width: 2px; background: #eaeaea; }
-        .timeline-item { position: relative; padding-left: 4.5rem; margin-bottom: 2.5rem; }
+        .timeline { max-width: 800px; margin: 0 auto; position: relative; padding: 1rem 0; text-align: left; }
+        .timeline::before { content: ''; position: absolute; top: 0; bottom: 0; left: 24px; width: 2px; background: #e2e8f0; }
+        .timeline-item { position: relative; padding-left: 5.5rem; margin-bottom: 3.5rem; }
         .timeline-item:last-child { margin-bottom: 0; }
         
-        .timeline-dot {
-            position: absolute; left: 17px; top: 2rem; width: 16px; height: 16px;
-            border-radius: 50%; background: #fff; border: 3px solid #111; z-index: 2;
+        .timeline-dot { position: absolute; z-index: 2; transition: all 0.4s ease; }
+        .timeline-dot.active { 
+            background: #4f46e5; width: 16px; height: 16px; border-radius: 50%;
+            left: 17px; top: 0.4rem; box-shadow: 0 0 0 5px rgba(79, 70, 229, 0.2); animation: pulse-blue 2.5s infinite; 
         }
-        .timeline-dot.completed { border-color: #111; background: #111; }
-        .timeline-dot.active { border-color: #3b82f6; background: #3b82f6; box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); animation: pulse 2s infinite; }
-        .timeline-dot.upcoming { border-color: #d1d5db; }
+        .timeline-dot.upcoming { 
+            background: #fafafa; border: 3px solid #cbd5e1; width: 16px; height: 16px;
+            border-radius: 50%; left: 17px; top: 0.4rem;
+        }
+        .timeline-item:hover .timeline-dot.upcoming { border-color: #94a3b8; transform: scale(1.2); }
         
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        .timeline-dot.completed { 
+            background: #10b981; border: 3px solid #10b981; width: 16px; height: 16px;
+            border-radius: 50%; left: 17px; top: 0.4rem;
         }
-        .badge.completed { background: #111; color: #fff; margin-bottom: 1rem;}
-        .badge.upcoming { background: #f3f4f6; color: #666; margin-bottom: 1rem;}
 
-        /* --- NEW SPLIT-LAYOUT CONTACT SECTION --- */
-        #contact { 
-            padding: 6rem 5%; 
-            background: #fafafa;
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(79, 70, 229, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
         }
+
+        .timeline-card h3 { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem; color: #0f172a; letter-spacing: -0.5px; }
+        .timeline-card p { font-size: 1.05rem; color: #475569; line-height: 1.6; margin: 0; max-width: 700px; }
         
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            align-items: center;
-        }
+        .badge.active-stage { background: #e0e7ff; color: #4f46e5; border: 1px solid #c7d2fe; padding: 0.35rem 0.9rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+        .badge.upcoming-stage { background: #f8fafc; color: #64748b; padding: 0.35rem 0.9rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; border: 1px solid #e2e8f0; }
+        .badge.completed-stage { background: #d1fae5; color: #059669; padding: 0.35rem 0.9rem; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; border: 1px solid #a7f3d0; }
 
-        .contact-left {
-            max-width: 500px;
+        /* --- TERMINAL MODAL STYLES --- */
+        .term-trigger-btn {
+            background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; padding: 0.3rem 0.7rem;
+            border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+            font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;
         }
+        .term-trigger-btn:hover { background: #0f172a; color: #fff; border-color: #0f172a; box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15); transform: translateY(-1px); }
 
-        /* Beautiful Serif Heading */
-        .contact-heading {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 5vw, 4.5rem);
-            font-weight: 800;
-            line-height: 1.05;
-            color: #0f172a;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1px;
+        .terminal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000;
+            display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
+        .terminal-overlay.active { opacity: 1; visibility: visible; }
+        .terminal-window {
+            width: 90%; max-width: 650px; background: #0f172a; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid #334155;
+            transform: translateY(20px) scale(0.98); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .terminal-overlay.active .terminal-window { transform: translateY(0) scale(1); }
+        .terminal-header { background: #1e293b; padding: 12px 16px; display: flex; align-items: center; border-bottom: 1px solid #334155; }
+        .term-buttons { display: flex; gap: 8px; }
+        .term-btn { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; transition: opacity 0.2s; }
+        .term-btn:hover { opacity: 0.8; }
+        .term-btn.close { background: #ef4444; }
+        .term-btn.min { background: #eab308; }
+        .term-btn.max { background: #22c55e; }
+        .term-title { flex: 1; text-align: center; color: #94a3b8; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.8rem; margin-right: 44px; }
+        .terminal-body { 
+            padding: 1.5rem; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; 
+            color: #e2e8f0; font-size: 0.9rem; height: 320px; overflow-y: auto; line-height: 1.6; text-align: left;
+        }
+        .term-line { margin-bottom: 6px; }
+        .term-prompt { color: #10b981; font-weight: 600; }
+        .term-command { color: #f8fafc; }
+        .term-cursor { display: inline-block; width: 8px; height: 15px; background: #f8fafc; animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 4px; }
+        @keyframes blink { 50% { opacity: 0; } }
 
-        .text-gradient {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
+        /* --- CONTACT SECTION --- */
+        #contact { padding: 7rem 5%; background: #ffffff; }
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; max-width: 1100px; margin: 0 auto; align-items: center; }
+        .contact-left { max-width: 500px; }
+        .contact-heading { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 5vw, 4.5rem); font-weight: 800; line-height: 1.05; color: #0f172a; margin-bottom: 1.5rem; letter-spacing: -2px; }
+        .text-gradient { background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+        .contact-desc { font-size: 1.15rem; color: #475569; line-height: 1.7; margin-bottom: 3rem; }
+        .email-block { display: flex; align-items: center; gap: 1.2rem; transition: transform 0.3s ease; }
+        .email-block:hover { transform: translateX(5px); }
+        .email-icon { width: 54px; height: 54px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; color: #4f46e5; background: #ffffff; box-shadow: 0 4px 14px rgba(0,0,0,0.04); }
+        .email-label { display: block; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.2rem; }
+        .email-address { display: block; font-size: 1.15rem; font-weight: 700; color: #0f172a; }
 
-        .contact-desc {
-            font-size: 1.1rem;
-            color: #475569;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-        }
-
-        .email-block {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-        }
-
-        .email-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3b82f6;
-            background: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-
-        .email-label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 0.2rem;
-        }
-
-        .email-address {
-            display: block;
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        /* Right Form Card */
-        .contact-form-card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 3rem;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);
-            width: 100%;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group-modern {
-            width: 100%;
-            margin-bottom: 1.5rem;
-        }
+        .contact-form-card { background: #ffffff; border-radius: 32px; padding: 3rem; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02); width: 100%; position: relative; }
+        .contact-form-card::before { content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2)); z-index: -1; border-radius: 34px; opacity: 0; transition: opacity 0.5s ease; }
+        .contact-form-card:hover::before { opacity: 1; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-group-modern { width: 100%; margin-bottom: 1.5rem; }
         .form-row .form-group-modern { margin-bottom: 0; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.6rem; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .form-control-modern { width: 100%; padding: 1.1rem 1.25rem; font-size: 1rem; background: #f4f4f5; border: 2px solid transparent; border-radius: 14px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; color: #0f172a; }
+        .form-control-modern::placeholder { color: #9ca3af; font-weight: 400; }
+        .form-control-modern:focus { outline: none; background-color: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); }
+        textarea.form-control-modern { min-height: 150px; resize: none !important; }
+        .btn-gradient { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; border: none; padding: 1.25rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); }
+        .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(124, 58, 237, 0.4); }
 
-        .form-label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 0.6rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
+        /* Toast System */
+        .toast-container { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: #ffffff; color: #0f172a; padding: 1rem 1.5rem; border-radius: 100px; box-shadow: 0 10px 40px -10px rgba(0,0,0,0.2); border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 0.95rem; transform: translateY(100px) scale(0.9); opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .toast.show { transform: translateY(0) scale(1); opacity: 1; }
+        .toast.success .toast-icon { color: #10b981; } 
+        .toast.error .toast-icon { color: #ef4444; } 
 
-        .form-control-modern {
-            width: 100%;
-            padding: 1.1rem 1.25rem;
-            font-size: 1rem;
-            background-color: #f8fafc; /* Very light gray */
-            border: 2px solid transparent;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            color: #0f172a;
+        footer { text-align: center; padding: 2.5rem 5%; border-top: 1px solid rgba(0,0,0,0.05); color: #64748b; font-size: 0.9rem; }
+        .footer-text { cursor: pointer; user-select: none; } /* Admin Trigger */
+
+        /* --- ADMIN PANEL MODAL --- */
+        .admin-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); z-index: 3000;
+            display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
+        .admin-overlay.active { opacity: 1; visibility: visible; }
+        .admin-card {
+            width: 90%; max-width: 600px; background: #ffffff; border-radius: 24px; padding: 2.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); transform: translateY(20px) scale(0.98);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); max-height: 90vh; overflow-y: auto;
+        }
+        .admin-overlay.active .admin-card { transform: translateY(0) scale(1); }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .admin-header h3 { font-size: 1.5rem; font-weight: 800; color: #0f172a; margin: 0; }
+        .admin-close { cursor: pointer; color: #64748b; background: none; border: none; padding: 0.5rem; border-radius: 8px; transition: background 0.2s; }
+        .admin-close:hover { background: #f1f5f9; color: #ef4444; }
         
-        .form-control-modern::placeholder { color: #94a3b8; font-weight: 400; }
-        
-        .form-control-modern:focus {
-            outline: none;
-            background-color: #ffffff;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-        }
+        .admin-form-group { margin-bottom: 1.25rem; }
+        .admin-label { display: block; font-size: 0.85rem; font-weight: 700; color: #475569; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px;}
+        .admin-input, .admin-select { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; font-size: 0.95rem; background: #f8fafc; }
+        .admin-input:focus, .admin-select:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        .admin-textarea { width: 100%; padding: 0.8rem 1rem; border: 1px solid #e2e8f0; border-radius: 10px; font-family: ui-monospace, monospace; font-size: 0.85rem; background: #f8fafc; min-height: 120px; resize: vertical; }
+        .admin-textarea:focus { outline: none; border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
+        .admin-help { display: block; font-size: 0.75rem; color: #94a3b8; margin-top: 0.4rem; }
+        .admin-actions { display: flex; gap: 1rem; margin-top: 2rem; }
 
-        textarea.form-control-modern {
-            min-height: 150px;
-            resize: none !important;
-        }
-
-        .btn-gradient {
-            width: 100%;
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); /* Deep vibrant purple/blue */
-            color: #fff;
-            border: none;
-            padding: 1.2rem;
-            border-radius: 12px;
-            font-size: 1.05rem;
-            font-weight: 700;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
-        }
-
-        .error-msg {
-            color: #dc2626; font-size: 0.85rem; font-weight: 500;
-            display: none; margin-top: 0.4rem; text-align: left; padding-left: 0.2rem;
-        }
-
-        /* Success Toast Popup */
-        .toast {
-            position: fixed; bottom: 30px; right: 30px; background: #111; color: #fff;
-            padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-            display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 0.95rem;
-            transform: translateY(150px); opacity: 0; visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9999;
-        }
-        .toast.show { transform: translateY(0); opacity: 1; visibility: visible; }
-        .toast svg { color: #22c55e; }
-
-        footer { text-align: center; padding: 2rem 5%; border-top: 1px solid rgba(0,0,0,0.05); color: #888; font-size: 0.9rem; }
-
-        /* Media Queries for Responsive Design (Mobile, Tablet) */
-        @media (max-width: 950px) {
-            .contact-container { grid-template-columns: 1fr; gap: 3rem; }
-            .contact-left { max-width: 100%; text-align: center; }
-            .email-block { justify-content: center; }
-        }
-
-        @media (max-width: 800px) {
-            .features-grid { grid-template-columns: 1fr; }
-        }
-
+        /* Media Queries */
+        @media (max-width: 950px) { .contact-container { grid-template-columns: 1fr; gap: 4rem; } .contact-left { max-width: 100%; text-align: center; } .email-block { justify-content: center; } }
+        @media (max-width: 800px) { .features-grid { grid-template-columns: 1fr; } }
         @media (max-width: 768px) {
-            section:not(.hero) { padding: 4rem 5%; } 
-            .hero { padding-top: 80px; }
-            .glass-card, .contact-form-card { padding: 2rem 1.5rem; }
-            
-            /* Mobile Logo Adjustments */
-            .logo img { height: 90px; }
-            nav.scrolled .logo img { height: 60px; }
-            
-            .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
-            .contact-heading { font-size: 2.5rem; }
-
-            .timeline-item { padding-left: 3rem; }
-            .timeline-dot { left: 9px; width: 14px; height: 14px; top: 2.2rem; }
-            .timeline::before { left: 15px; }
-            
+            section:not(.hero) { padding: 5rem 5%; } .hero { padding-top: 100px; }
+            .dynamic-card, .contact-form-card { padding: 2rem 1.5rem; }
+            .logo img { height: 36px !important; } nav.scrolled .logo img { height: 32px !important; }
+            nav { padding: 1rem 5%; } nav.scrolled { padding: 0.8rem 5%; }
+            .form-row { grid-template-columns: 1fr; gap: 1.5rem; } .contact-heading { font-size: 2.8rem; }
+            .timeline-item { padding-left: 3.5rem; margin-bottom: 2.5rem; } .timeline::before { left: 17px; }
+            .timeline-dot.active, .timeline-dot.upcoming, .timeline-dot.completed { left: 10px; top: 0.4rem; width: 14px; height: 14px; }
             .menu-toggle { display: flex; }
-            .nav-links {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100vh;
-                background: rgba(255, 255, 255, 0.98);
-                flex-direction: column;
-                justify-content: center;
-                gap: 2rem;
-                transform: translateY(-100%);
-                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                z-index: 1001;
-            }
-            .nav-links.active { transform: translateY(0); }
-            .nav-links a { font-size: 1.5rem; font-weight: 600; }
-            
-            .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
-            .menu-toggle.is-active .bar:nth-child(1) { transform: rotate(45deg); width: 27px; }
-            .menu-toggle.is-active .bar:nth-child(3) { transform: rotate(-45deg); width: 27px; }
-
-            .toast { right: 15px; left: 15px; bottom: 15px; justify-content: center; }
+            .nav-links { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(255, 255, 255, 0.98); flex-direction: column; justify-content: center; gap: 2rem; transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1001; }
+            .nav-links.active { transform: translateY(0); } .nav-links a { font-size: 1.5rem; font-weight: 600; }
+            .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; } .menu-toggle.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } .menu-toggle.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
         }
     </style>
 </head>
@@ -585,10 +331,9 @@
 
     <nav class="fade-up">
         <a href="#" class="logo">
-            <img src="frylabs-logo.png" alt="FryLabs Studio Logo">
+            <img src="frylabs-logo.png" alt="FryLabs Studio Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect width=\'100\' height=\'100\' fill=\'%23eee\'/><text x=\'50\' y=\'50\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' alignment-baseline=\'middle\'>FryLabs</text></svg>'">
         </a>
         
-        <!-- Hamburger Icon -->
         <div class="menu-toggle" id="mobile-menu">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -606,7 +351,7 @@
 
     <section class="hero">
         <h1 class="fade-up" style="transition-delay: 0.1s;">Building Systems from Zero.</h1>
-        <p class="power-statement fade-up" style="transition-delay: 0.15s; margin-bottom: 2.5rem;">FryLabs is an independent systems engineering studio focused on operating systems, kernel research, and low-level performance tooling.</p>
+        <p class="power-statement fade-up" style="transition-delay: 0.15s;">FryLabs is an independent systems engineering studio focused on operating systems, kernel research, and low-level performance tooling.</p>
         
         <div class="fade-up" style="transition-delay: 0.2s;">
             <a href="#projects" class="btn">View Current Projects</a>
@@ -616,13 +361,10 @@
     <!-- Current Projects Section -->
     <section id="projects">
         <h2 class="section-title fade-up">Current Projects</h2>
-        <div class="glass-card project-card fade-up">
-            
-            <!-- Sleek, App-Style Header -->
+        <div class="dynamic-card project-card fade-up">
             <div class="project-header-top">
                 <div class="project-logo-box">
-                    <!-- Controlled Image Size -->
-                    <img src="frisp-os-preview.png" alt="FRISP OS Logo">
+                    <img src="frisp-os-preview.png" alt="FRISP OS Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'40\' fill=\'%23000\'/><circle cx=\'60\' cy=\'40\' r=\'10\' fill=\'%23fff\'/></svg>'">
                 </div>
                 <div class="project-title-wrapper">
                     <h3>FRISP OS</h3>
@@ -645,128 +387,64 @@
     <section id="features">
         <h2 class="section-title fade-up">FRISP OS Core Architecture</h2>
         <div class="features-grid">
-            <div class="glass-card feature-card fade-up">
-                <div class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
-                </div>
+            <div class="dynamic-card feature-card fade-up">
+                <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></div>
                 <h3>Microkernel Design</h3>
-                <p>Engineered around a minimal, modular microkernel architecture. Only essential subsystems — task scheduling, interrupt handling, and memory management — operate in kernel space. Device drivers and file systems run in isolated user space.<br><br><strong style="color: #111; display: block;">Designed for fault containment and long-term scalability.</strong></p>
+                <p>Engineered around a minimal, modular microkernel architecture. Only essential subsystems — task scheduling, interrupt handling, and memory management — operate in kernel space. Device drivers and file systems run in isolated user space.<br><br><strong style="color: #0f172a; display: block;">Designed for fault containment and long-term scalability.</strong></p>
             </div>
-            
-            <div class="glass-card feature-card fade-up" style="transition-delay: 0.1s;">
-                <div class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                </div>
+            <div class="dynamic-card feature-card fade-up" style="transition-delay: 0.1s;">
+                <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
                 <h3>Strict Memory Safety</h3>
-                <p>Built with hardware-enforced memory isolation and privilege separation. Implements paging, segmented ring protection (Ring 0 / Ring 3), and controlled system call gates to prevent unauthorized memory access.<br><br><strong style="color: #111; display: block;">Security is foundational — not optional.</strong></p>
+                <p>Built with hardware-enforced memory isolation and privilege separation. Implements paging, segmented ring protection (Ring 0 / Ring 3), and controlled system call gates to prevent unauthorized memory access.<br><br><strong style="color: #0f172a; display: block;">Security is foundational — not optional.</strong></p>
             </div>
-            
-            <div class="glass-card feature-card fade-up" style="transition-delay: 0.2s;">
-                <div class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                </div>
+            <div class="dynamic-card feature-card fade-up" style="transition-delay: 0.2s;">
+                <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
                 <h3>Zero-Overhead Drivers</h3>
-                <p>Hardware communication is implemented close to the metal using optimized C and Assembly. Direct interrupt-driven I/O and precise memory mapping ensure maximum throughput without the bloat of generic driver stacks.<br><br><strong style="color: #111; display: block;">Performance without compromise.</strong></p>
+                <p>Hardware communication is implemented close to the metal using optimized C and Assembly. Direct interrupt-driven I/O and precise memory mapping ensure maximum throughput without the bloat of generic driver stacks.<br><br><strong style="color: #0f172a; display: block;">Performance without compromise.</strong></p>
             </div>
-
-            <div class="glass-card feature-card fade-up" style="transition-delay: 0.3s;">
-                <div class="icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                </div>
+            <div class="dynamic-card feature-card fade-up" style="transition-delay: 0.3s;">
+                <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></div>
                 <h3>Modular IPC System</h3>
-                <p>A lightweight, message-based inter-process communication layer enables secure interaction between kernel services and userland modules. Isolated services operate without ever compromising kernel stability.<br><br><strong style="color: #111; display: block;">Designed for scalability and secure interaction.</strong></p>
+                <p>A lightweight, message-based inter-process communication layer enables secure interaction between kernel services and userland modules. Isolated services operate without ever compromising kernel stability.<br><br><strong style="color: #0f172a; display: block;">Designed for scalability and secure interaction.</strong></p>
             </div>
         </div>
     </section>
 
-    <!-- Roadmap Section -->
+    <!-- Roadmap Section (Dynamically Injected) -->
     <section id="status">
         <h2 class="section-title fade-up">Development Roadmap</h2>
-        <div class="timeline">
-            
-            <div class="timeline-item fade-up">
-                <div class="timeline-dot active"></div>
-                <div class="timeline-card">
-                    <span class="badge active" style="margin-bottom: 1rem;">Active: Foundation Stage</span>
-                    <h3>Phase 0: Boot Validation & Toolchain</h3>
-                    <p>Setting up the bare-metal build system, establishing strict Multiboot compliance, generating ISOs, and verifying kernel entry execution and VGA output using GRUB.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item fade-up" style="transition-delay: 0.1s;">
-                <div class="timeline-dot upcoming"></div>
-                <div class="timeline-card">
-                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
-                    <h3>Phase 1: Architecture & Boot Flow</h3>
-                    <p>Deepening boot flow understanding. Implementing manual GDT setup, verifying long-mode transition, and designing a clean, formalized entry point architecture.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item fade-up" style="transition-delay: 0.2s;">
-                <div class="timeline-dot upcoming"></div>
-                <div class="timeline-card">
-                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
-                    <h3>Phase 2: Core Kernel Implementation</h3>
-                    <p>Writing the core kernel mechanics, including preparing the IDT (Interrupt Descriptor Table), advanced memory management (paging), and process scheduling.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item fade-up" style="transition-delay: 0.3s;">
-                <div class="timeline-dot upcoming"></div>
-                <div class="timeline-card">
-                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
-                    <h3>Phase 3: Drivers & File System</h3>
-                    <p>Developing essential hardware drivers (keyboard, display, storage) and implementing a custom, highly-efficient file system.</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item fade-up" style="transition-delay: 0.4s;">
-                <div class="timeline-dot upcoming"></div>
-                <div class="timeline-card">
-                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
-                    <h3>Phase 4: Userland & IPC</h3>
-                    <p>Constructing the user-space environment, system calls, and a secure, message-based Inter-Process Communication (IPC) layer.</p>
-                </div>
-            </div>
-
+        <div class="timeline" id="roadmap-container">
+            <!-- Roadmap items render here from Firebase/State -->
+            <div style="text-align:center; color:#94a3b8; font-size:0.9rem;">Initializing System State...</div>
         </div>
     </section>
 
     <!-- About Developer Section -->
     <section id="about">
         <h2 class="section-title fade-up">Lead Engineer</h2>
-        <div class="glass-card project-card fade-up" style="text-align: center; max-width: 700px; padding: 3.5rem 2rem;">
-            
-            <!-- Sleek Minimalist Avatar with Gradient -->
+        <div class="dynamic-card project-card fade-up" style="text-align: center; max-width: 700px; padding: 3.5rem 2rem;">
             <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; margin: 0 auto 1.5rem auto; font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.1);">
                 AD
             </div>
-            
             <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; font-family: 'Plus Jakarta Sans', sans-serif;">Abhinav Das</h3>
-            <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Computer Science & Design Undergraduate</p>
+            <p style="color: #4f46e5; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Computer Science & Design Undergraduate</p>
             <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.5rem;">Exploring Systems Engineering & Visual Design</p>
-            
             <p class="project-desc" style="margin-bottom: 2.5rem; max-width: 550px; margin-left: auto; margin-right: auto;">
                 Curious about systems, design, and how software works at its lowest level. Currently exploring operating system development, microkernel concepts, and bare-metal programming while continuing to grow in graphic design and visual engineering.<br><br>Building, learning, experimenting &mdash; one layer at a time.
             </p>
-            
-            <!-- Link to Personal Portfolio -->
-            <a href="https://abhinavdas-sigma.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn" style="background-color: transparent; color: #111; border: 2px solid #111;">
+            <a href="https://abhinavdas-sigma.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn" style="background-color: transparent; color: #0f172a; border: 2px solid #e2e8f0; box-shadow: none;">
                 Visit Personal Portfolio 
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-left: 6px; margin-top: -2px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </a>
         </div>
     </section>
 
-    <!-- NEW SPLIT-LAYOUT CONTACT SECTION -->
+    <!-- CONTACT SECTION -->
     <section id="contact" class="contact-section">
         <div class="contact-container">
-            
-            <!-- Left Side Typography & Info -->
             <div class="contact-left fade-up">
                 <h2 class="contact-heading">Let's build something <span class="text-gradient">brilliant.</span></h2>
                 <p class="contact-desc">Have a project in mind, a freelance opportunity, or just want to chat about systems and tech? My inbox is always open.</p>
-                
                 <div class="email-block">
                     <div class="email-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
@@ -778,11 +456,9 @@
                 </div>
             </div>
             
-            <!-- Right Side Form Card -->
             <div class="contact-right fade-up" style="transition-delay: 0.15s;">
                 <div class="contact-form-card">
                     <form id="contactForm" action="https://formspree.io/f/xkovqboq" method="POST">
-                        
                         <div class="form-row">
                             <div class="form-group-modern">
                                 <label class="form-label" for="name">Name</label>
@@ -791,15 +467,13 @@
                             <div class="form-group-modern">
                                 <label class="form-label" for="email">Email</label>
                                 <input type="email" name="email" id="email" class="form-control-modern" placeholder="john@example.com" required>
-                                <div id="emailError" class="error-msg">Please enter a valid email address.</div>
+                                <div id="emailError" class="error-msg">Please enter a valid email.</div>
                             </div>
                         </div>
-
                         <div class="form-group-modern" style="margin-bottom: 2rem;">
                             <label class="form-label" for="message">Message</label>
                             <textarea name="message" id="message" class="form-control-modern" placeholder="How can I help you today?" required></textarea>
                         </div>
-
                         <button type="submit" id="submitBtn" class="btn-gradient">
                             Send Message 
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
@@ -807,129 +481,459 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </section>
 
     <footer>
         <div class="fade-up">
-            &copy; 2026 FryLabs Studio. Building Systems from Zero.
+            &copy; 2026 FryLabs Studio. <span class="footer-text" id="adminTrigger">Engineered from zero.</span>
         </div>
     </footer>
 
-    <!-- Custom Toast Notification -->
-    <div id="toast" class="toast">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        Message sent successfully.
+    <!-- Modern Dynamic Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- TERMINAL MODAL -->
+    <div class="terminal-overlay" id="terminalOverlay" onclick="if(event.target === this) window.closeTerminal()">
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="term-buttons">
+                    <span class="term-btn close" onclick="window.closeTerminal()"></span>
+                    <span class="term-btn min" onclick="window.closeTerminal()"></span>
+                    <span class="term-btn max"></span>
+                </div>
+                <div class="term-title">frylabs-os — bash — 80x24</div>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <!-- dynamic typing content goes here -->
+            </div>
+        </div>
     </div>
 
-    <script>
-        // Navbar scroll effect
-        window.addEventListener("scroll", () => {
-            const nav = document.querySelector("nav");
-            if (window.scrollY > 50) {
-                nav.classList.add("scrolled");
-            } else {
-                nav.classList.remove("scrolled");
-            }
-        });
+    <!-- FIREBASE AND APP LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
 
-        // Mobile Menu Logic
-        const mobileMenu = document.getElementById('mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
+        // Your live Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCykFPxUyRNOxfWxxTTNiyLQZp0fSjH5dU",
+            authDomain: "frylabs-a6799.firebaseapp.com",
+            projectId: "frylabs-a6799",
+            storageBucket: "frylabs-a6799.firebasestorage.app",
+            messagingSenderId: "278438655370",
+            appId: "1:278438655370:web:0cc7d52c0124d6900f8473",
+            measurementId: "G-MH947NSTBF"
+        };
         
-        mobileMenu.addEventListener('click', () => {
-            mobileMenu.classList.toggle('is-active');
-            navLinks.classList.toggle('active');
-        });
+        let appId = 'frylabs-studio';
+        let app, db, auth, analytics, userObj = null;
+        let isFirebaseActive = true;
+        let unsubscribeSnapshot = null;
 
-        // Close mobile menu when a link is clicked
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('is-active');
-                navLinks.classList.remove('active');
-            });
-        });
-
-        // Intersection Observer for Animations
-        document.addEventListener("DOMContentLoaded", () => {
-            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-        });
-
-        // AJAX Form Submission & Email Validation
-        const form = document.getElementById('contactForm');
-        const emailInput = document.getElementById('email');
-        const emailError = document.getElementById('emailError');
-        const submitBtn = document.getElementById('submitBtn');
-        const toast = document.getElementById('toast');
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-
-            // Validate Email
-            if (!emailPattern.test(emailInput.value)) {
-                emailError.style.display = 'block';
-                emailInput.style.borderColor = '#dc2626';
-                return;
-            } else {
-                emailError.style.display = 'none';
-                emailInput.style.borderColor = 'transparent';
+        // Default Roadmap State
+        let roadmapState = [
+            {
+                id: 0, status: "active", badge: "Active: Foundation Stage", title: "Phase 0: Boot Validation & Toolchain",
+                description: "Setting up the bare-metal build system, establishing strict Multiboot compliance, generating ISOs, and verifying kernel entry execution and VGA output using GRUB.",
+                terminal: [
+                    { type: "prompt", text: "root@frylabs:~$ ", cmd: "./fetch_status.sh --phase=0" },
+                    { type: "log", text: "[sys] Initializing phase 0 diagnostics..." },
+                    { type: "log", text: "[OK] i686-elf-gcc cross-compiler mounted." },
+                    { type: "log", text: "[OK] boot.s compiled and linked via linker.ld." },
+                    { type: "log", text: "[OK] Multiboot signature 0x1BADB002 verified." },
+                    { type: "warn", text: "[WARN] VGA text mode driver showing minor artifacting. Debugging..." },
+                    { type: "info", text: ">>> SYSTEM STATUS: FOUNDATION STAGE ACTIVE." }
+                ]
+            },
+            {
+                id: 1, status: "upcoming", badge: "Upcoming", title: "Phase 1: Architecture & Boot Flow",
+                description: "Deepening boot flow understanding. Implementing manual GDT setup, verifying long-mode transition, and designing a clean, formalized entry point architecture.",
+                terminal: [
+                    { type: "prompt", text: "root@frylabs:~$ ", cmd: "./fetch_status.sh --phase=1" },
+                    { type: "log", text: "[sys] Polling architecture endpoints..." },
+                    { type: "warn", text: "[PENDING] Global Descriptor Table (GDT) struct uninitialized." },
+                    { type: "warn", text: "[PENDING] Long-mode transition sequences offline." },
+                    { type: "info", text: ">>> SYSTEM STATUS: AWAITING PHASE 0 COMPLETION." }
+                ]
+            },
+            {
+                id: 2, status: "upcoming", badge: "Upcoming", title: "Phase 2: Core Kernel Implementation",
+                description: "Writing the core kernel mechanics, including preparing the IDT (Interrupt Descriptor Table), advanced memory management (paging), and process scheduling.",
+                terminal: [
+                    { type: "prompt", text: "root@frylabs:~$ ", cmd: "./fetch_status.sh --phase=2" },
+                    { type: "log", text: "[sys] Probing core mechanics module..." },
+                    { type: "warn", text: "[ERR] Interrupt Descriptor Table (IDT) not found." },
+                    { type: "warn", text: "[ERR] Paging structures missing (CR3 null)." },
+                    { type: "info", text: ">>> SYSTEM STATUS: LOCKED. KERNEL PANIC PREVENTED." }
+                ]
+            },
+            {
+                id: 3, status: "upcoming", badge: "Upcoming", title: "Phase 3: Drivers & File System",
+                description: "Developing essential hardware drivers (keyboard, display, storage) and implementing a custom, highly-efficient file system.",
+                terminal: [
+                    { type: "prompt", text: "root@frylabs:~$ ", cmd: "./fetch_status.sh --phase=3" },
+                    { type: "log", text: "[sys] Accessing peripheral bus..." },
+                    { type: "warn", text: "[ERR] No keyboard driver mapped to IRQ1." },
+                    { type: "warn", text: "[ERR] Block storage devices unreachable." },
+                    { type: "info", text: ">>> SYSTEM STATUS: DRIVER SUBSYSTEM OFFLINE." }
+                ]
+            },
+            {
+                id: 4, status: "upcoming", badge: "Upcoming", title: "Phase 4: Userland & IPC",
+                description: "Constructing the user-space environment, system calls, and a secure, message-based Inter-Process Communication (IPC) layer.",
+                terminal: [
+                    { type: "prompt", text: "root@frylabs:~$ ", cmd: "./fetch_status.sh --phase=4" },
+                    { type: "log", text: "[sys] Initializing userland IPC mesh..." },
+                    { type: "warn", text: "[ERR] Syscall gates unconfigured (Ring 3 blocked)." },
+                    { type: "info", text: ">>> SYSTEM STATUS: USERSPACE UNREACHABLE." }
+                ]
             }
+        ];
 
-            // Visual loading state
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = 'Sending...';
-            submitBtn.style.opacity = '0.8';
-            submitBtn.style.pointerEvents = 'none';
-
-            // Send via fetch
-            const formData = new FormData(form);
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
+        // --- RENDER ROADMAP ---
+        function renderRoadmap() {
+            const container = document.getElementById('roadmap-container');
+            container.innerHTML = '';
+            
+            // Sort by id to ensure order
+            roadmapState.sort((a,b) => a.id - b.id).forEach((phase, index) => {
+                const delay = index * 0.1;
+                const dotClass = phase.status === 'active' ? 'active' : phase.status === 'completed' ? 'completed' : 'upcoming';
+                const badgeClass = phase.status === 'active' ? 'active-stage' : phase.status === 'completed' ? 'completed-stage' : 'upcoming-stage';
                 
-                if (response.ok) {
-                    toast.classList.add('show');
-                    form.reset();
-                    
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 4000);
-                } else {
-                    alert("Oops! There was a problem submitting your form");
-                }
-            } catch (error) {
-                alert("Network error. Please try again later.");
-            } finally {
-                // Restore button
-                submitBtn.innerHTML = originalText;
-                submitBtn.style.opacity = '1';
-                submitBtn.style.pointerEvents = 'auto';
+                container.innerHTML += `
+                    <div class="timeline-item fade-up" style="transition-delay: ${delay}s;">
+                        <div class="timeline-dot ${dotClass}"></div>
+                        <div class="timeline-card">
+                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                                <span class="badge ${badgeClass}">${phase.badge}</span>
+                                <button class="term-trigger-btn" onclick="window.openTerminal(${phase.id})">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                                    Terminal
+                                </button>
+                            </div>
+                            <h3>${phase.title}</h3>
+                            <p>${phase.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Re-trigger fade-up observer for new elements
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        }
+
+        // Initialize App & Firebase
+        if (isFirebaseActive) {
+            try {
+                app = initializeApp(firebaseConfig);
+                analytics = getAnalytics(app);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                const initAuth = async () => {
+                    try {
+                        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (authError) {
+                        // Token mismatch occurs because the environment's auth token is for a different Firebase project.
+                        // Silently fallback to anonymous auth to prevent console errors from triggering UI alerts.
+                        try {
+                            await signInAnonymously(auth);
+                        } catch (anonError) {
+                            console.warn("Anonymous fallback failed:", anonError);
+                        }
+                    }
+                };
+                
+                initAuth().then(() => {
+                    onAuthStateChanged(auth, (user) => {
+                        if (user) {
+                            userObj = user;
+                            setupDatabaseListener();
+                        }
+                    });
+                });
+            } catch (e) {
+                console.error("Firebase init failed, running in memory mode", e);
+                renderRoadmap();
             }
+        } else {
+            console.log("Using Local In-Memory Fallback mode. Add Firebase config to sync globally.");
+            renderRoadmap(); // Render local state
+        }
+
+        function setupDatabaseListener() {
+            if (!userObj) return;
+            const roadmapCol = collection(db, 'artifacts', appId, 'public', 'data', 'roadmap');
+            
+            unsubscribeSnapshot = onSnapshot(roadmapCol, (snapshot) => {
+                if (!snapshot.empty) {
+                    let dbData = [];
+                    snapshot.forEach(doc => dbData.push(doc.data()));
+                    roadmapState = dbData;
+                    renderRoadmap();
+                } else {
+                    // Seed initial data if empty
+                    roadmapState.forEach(async (phase) => {
+                        await setDoc(doc(roadmapCol, phase.id.toString()), phase);
+                    });
+                }
+            }, (error) => {
+                console.error("Firestore error:", error);
+                window.showToast("Database connection error", "error");
+            });
+        }
+
+        // --- SECRET ADMIN PANEL LOGIC ---
+        let adminClicks = 0;
+        document.getElementById('adminTrigger').addEventListener('click', () => {
+            adminClicks++;
+            if(adminClicks >= 5) {
+                adminClicks = 0;
+                const pwd = prompt("System Access: Enter Credentials");
+                // Base64 encoded password to hide it from plain text source
+                if(pwd && btoa(pwd) === 'RnJ5TGFic0FiaGlAMDY=') {
+                    window.openAdmin();
+                } else if (pwd !== null) {
+                    window.showToast("Access Denied", "error");
+                }
+            }
+            setTimeout(() => { adminClicks = 0; }, 2000);
         });
 
-        // Clear error styling when user types
-        emailInput.addEventListener('input', () => {
-            if (emailError.style.display === 'block') {
-                emailError.style.display = 'none';
-                emailInput.style.borderColor = 'transparent';
+        window.openAdmin = function() {
+            // Dynamically inject the admin HTML so it doesn't exist in the source code initially
+            if (!document.getElementById('adminOverlay')) {
+                const adminHTML = `
+                <div class="admin-overlay active" id="adminOverlay" onclick="if(event.target === this) window.closeAdmin()">
+                    <div class="admin-card">
+                        <div class="admin-header">
+                            <h3>Admin: Update System State</h3>
+                            <button class="admin-close" onclick="window.closeAdmin()">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </button>
+                        </div>
+                        
+                        <div class="admin-form-group">
+                            <label class="admin-label">Select Phase to Edit</label>
+                            <select class="admin-select" id="adminPhaseSelect" onchange="window.loadAdminPhase()"></select>
+                        </div>
+                        
+                        <div class="form-row" style="margin-bottom:0;">
+                            <div class="admin-form-group">
+                                <label class="admin-label">Status</label>
+                                <select class="admin-select" id="adminStatus">
+                                    <option value="active">Active</option>
+                                    <option value="upcoming">Upcoming</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                            <div class="admin-form-group">
+                                <label class="admin-label">Badge Text</label>
+                                <input type="text" class="admin-input" id="adminBadge" placeholder="e.g. Active: Foundation Stage">
+                            </div>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label">Phase Title</label>
+                            <input type="text" class="admin-input" id="adminTitle" placeholder="e.g. Phase 0: Boot Validation">
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label">Description</label>
+                            <textarea class="admin-textarea" id="adminDesc" style="min-height: 80px;" placeholder="Phase description..."></textarea>
+                        </div>
+
+                        <div class="admin-form-group">
+                            <label class="admin-label">Terminal Logs (Line Separated)</label>
+                            <textarea class="admin-textarea" id="adminTerminal" placeholder="prompt|root@frylabs:~$ |./fetch.sh&#10;log|[sys] Init...&#10;warn|[ERR] Missing IDT&#10;info|>>> STATUS: ACTIVE"></textarea>
+                            <span class="admin-help">Format: <code>type|text|command</code>. Types: prompt, log, warn, info.</span>
+                        </div>
+
+                        <div class="admin-actions">
+                            <button onclick="window.saveAdminData()" class="btn-gradient" style="padding: 0.8rem 1.5rem; border-radius:10px; flex:1;">Save to Database</button>
+                        </div>
+                    </div>
+                </div>`;
+                document.body.insertAdjacentHTML('beforeend', adminHTML);
+            } else {
+                document.getElementById('adminOverlay').classList.add('active');
             }
-        });
+
+            const select = document.getElementById('adminPhaseSelect');
+            select.innerHTML = roadmapState.map(p => `<option value="${p.id}">Phase ${p.id}</option>`).join('');
+            window.loadAdminPhase();
+            document.body.style.overflow = 'hidden';
+            window.showToast("Admin Mode Unlocked", "success");
+        };
+
+        window.closeAdmin = function() {
+            document.getElementById('adminOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        window.loadAdminPhase = function() {
+            const id = parseInt(document.getElementById('adminPhaseSelect').value);
+            const phase = roadmapState.find(p => p.id === id);
+            if(!phase) return;
+
+            document.getElementById('adminStatus').value = phase.status;
+            document.getElementById('adminBadge').value = phase.badge;
+            document.getElementById('adminTitle').value = phase.title;
+            document.getElementById('adminDesc').value = phase.description;
+            
+            // Format terminal string
+            document.getElementById('adminTerminal').value = phase.terminal.map(t => {
+                if(t.type === 'prompt') return `${t.type}|${t.text}|${t.cmd}`;
+                return `${t.type}|${t.text}`;
+            }).join('\n');
+        };
+
+        window.saveAdminData = async function() {
+            const id = parseInt(document.getElementById('adminPhaseSelect').value);
+            const termText = document.getElementById('adminTerminal').value;
+            
+            // Parse terminal lines safely
+            const terminalArr = termText.split('\n').filter(l => l.trim().length > 0).map(line => {
+                const parts = line.split('|');
+                if(parts[0] === 'prompt') return { type: 'prompt', text: parts[1] || '', cmd: parts[2] || '' };
+                return { type: parts[0] || 'log', text: parts[1] || '' };
+            });
+
+            const updatedPhase = {
+                id: id,
+                status: document.getElementById('adminStatus').value,
+                badge: document.getElementById('adminBadge').value,
+                title: document.getElementById('adminTitle').value,
+                description: document.getElementById('adminDesc').value,
+                terminal: terminalArr
+            };
+
+            // Update Local State
+            const index = roadmapState.findIndex(p => p.id === id);
+            if(index !== -1) roadmapState[index] = updatedPhase;
+
+            // Sync to Firestore if active
+            if (isFirebaseActive && userObj) {
+                try {
+                    const phaseDoc = doc(db, 'artifacts', appId, 'public', 'data', 'roadmap', id.toString());
+                    await setDoc(phaseDoc, updatedPhase);
+                    window.showToast("System State Synced Successfully", "success");
+                } catch (e) {
+                    console.error(e);
+                    window.showToast("Database Sync Failed", "error");
+                }
+            } else {
+                // Just re-render locally
+                renderRoadmap();
+                window.showToast("Saved Locally (In-Memory)", "success");
+            }
+            window.closeAdmin();
+        };
+
+        // --- TERMINAL MODAL LOGIC ---
+        let currentTypeTimeouts = [];
+        window.openTerminal = function(phaseId) {
+            const overlay = document.getElementById('terminalOverlay');
+            const body = document.getElementById('terminalBody');
+            
+            currentTypeTimeouts.forEach(clearTimeout);
+            currentTypeTimeouts = [];
+            body.innerHTML = ''; 
+            
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+            
+            const phase = roadmapState.find(p => p.id === phaseId);
+            const lines = phase ? phase.terminal : [];
+            let currentLine = 0;
+
+            function typeLine() {
+                if (currentLine >= lines.length) {
+                    const cursorLine = document.createElement('div');
+                    cursorLine.innerHTML = `<span class="term-prompt">root@frylabs:~$ </span><span class="term-cursor"></span>`;
+                    body.appendChild(cursorLine);
+                    body.scrollTop = body.scrollHeight;
+                    return;
+                }
+
+                const lineData = lines[currentLine];
+                const lineEl = document.createElement('div');
+                lineEl.className = 'term-line';
+                
+                if (lineData.type === 'prompt') {
+                    lineEl.innerHTML = `<span class="term-prompt">${lineData.text}</span><span class="term-command"></span><span class="term-cursor"></span>`;
+                    body.appendChild(lineEl);
+                    
+                    const cmdText = lineData.cmd;
+                    let charIdx = 0;
+                    const cmdSpan = lineEl.querySelector('.term-command');
+                    const cursorSpan = lineEl.querySelector('.term-cursor');
+                    
+                    function typeChar() {
+                        if (charIdx < cmdText.length) {
+                            cmdSpan.textContent += cmdText[charIdx];
+                            charIdx++;
+                            currentTypeTimeouts.push(setTimeout(typeChar, 35));
+                        } else {
+                            cursorSpan.remove(); 
+                            currentLine++;
+                            currentTypeTimeouts.push(setTimeout(typeLine, 200));
+                        }
+                        body.scrollTop = body.scrollHeight;
+                    }
+                    typeChar();
+                    
+                } else {
+                    let colorStr = '';
+                    if (lineData.type === 'warn') colorStr = 'color: #eab308;'; // yellow
+                    if (lineData.type === 'info') colorStr = 'color: #3b82f6; font-weight: 600;'; // blue
+                    
+                    lineEl.innerHTML = `<span style="${colorStr}">${lineData.text}</span>`;
+                    body.appendChild(lineEl);
+                    currentLine++;
+                    currentTypeTimeouts.push(setTimeout(typeLine, 150));
+                }
+                body.scrollTop = body.scrollHeight;
+            }
+            currentTypeTimeouts.push(setTimeout(typeLine, 400));
+        }
+
+        window.closeTerminal = function() {
+            document.getElementById('terminalOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            currentTypeTimeouts.forEach(clearTimeout);
+            currentTypeTimeouts = [];
+        }
+
+        // --- Professional Toast System ---
+        window.showToast = function(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            const iconHTML = type === 'success' 
+                ? '<svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+                : '<svg class="toast-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+            toast.innerHTML = `${iconHTML} <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.add('show'), 10);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 500); 
+            }, 4000);
+        }
     </script>
 </body>
 </html>
