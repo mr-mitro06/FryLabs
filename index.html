@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Site Verification -->
+    
+    <!-- Google Site Verification - Use "HTML Tag" method in Search Console -->
     <meta name="google-site-verification" content="google928aa317ce833dec" />
     
     <title>FryLabs Studio | Systems Engineering</title>
@@ -83,19 +84,19 @@
         /* Glassmorphic Navigation */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 1.2rem 5%; position: fixed; width: 100%; top: 0;
+            padding: 1.5rem 5%; position: fixed; width: 100%; top: 0;
             background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             z-index: 1000; border-bottom: 1px solid rgba(255, 255, 255, 0);
         }
         nav.scrolled {
             background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 30px rgba(0,0,0,0.04);
-            padding: 0.8rem 5%; border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1rem 5%; border-bottom: 1px solid rgba(0,0,0,0.05);
         }
 
         .logo { display: flex; align-items: center; text-decoration: none; transition: opacity 0.3s ease; z-index: 1002; }
         .logo:hover { opacity: 0.7; }
-        .logo img { height: 44px; width: auto; display: block; mix-blend-mode: multiply; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease; }
-        nav.scrolled .logo img { height: 36px; }
+        .logo img { height: 48px; width: auto; display: block; mix-blend-mode: multiply; transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease; }
+        nav.scrolled .logo img { height: 38px; }
 
         .nav-actions { display: flex; align-items: center; gap: 2.5rem; }
         .nav-links { display: flex; gap: 2.5rem; align-items: center; }
@@ -118,9 +119,9 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1002;
         }
-        .theme-toggle:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.08); }
+        .theme-toggle:hover { background: rgba(255, 255, 255, 0.1); transform: scale(1.1); }
         body:not(.dark) .theme-toggle { background: transparent; border-color: transparent; color: #475569; }
-        body:not(.dark) .theme-toggle:hover { background: rgba(0,0,0,0.05); transform: scale(1.08); }
+        body:not(.dark) .theme-toggle:hover { background: rgba(0,0,0,0.05); transform: scale(1.1); }
 
         .theme-toggle svg {
             position: absolute; width: 22px; height: 22px;
@@ -303,11 +304,11 @@
         .form-group-modern { width: 100%; margin-bottom: 1.5rem; }
         .form-row .form-group-modern { margin-bottom: 0; }
         .form-label { display: block; font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 0.6rem; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .form-control-modern { width: 100%; padding: 1.1rem 1.25rem; font-size: 1rem; background: #f4f4f5; border: 2px solid transparent; border-radius: 14px; font-family: inherit; color: #0f172a; }
+        .form-control-modern { width: 100%; padding: 1.1rem 1.25rem; font-size: 1rem; background: #f4f4f5; border: 2px solid transparent; border-radius: 14px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); font-family: inherit; color: #0f172a; }
         .form-control-modern::placeholder { color: #9ca3af; font-weight: 400; }
         .form-control-modern:focus { outline: none; background-color: #ffffff; border-color: #6366f1; box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); }
         textarea.form-control-modern { min-height: 150px; resize: none !important; }
-        .btn-gradient { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; border: none; padding: 1.25rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); }
+        .btn-gradient { width: 100%; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; border: none; padding: 1.25rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 8px 20px rgba(124, 58, 237, 0.25); }
         .btn-gradient:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(124, 58, 237, 0.4); }
 
         /* Toast System */
