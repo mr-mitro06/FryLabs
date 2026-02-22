@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FryLabs Studio | Systems Engineering</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans for Headers/Buttons, Inter for Body text, Playfair Display for the bold Contact heading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Preload critical images for perceived performance -->
+    <link rel="preload" as="image" href="frylabs-logo.png">
+    <link rel="preload" as="image" href="frisp-os-preview.png">
+    
+    <style>
+        /* Modern Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 120px; /* Adjusted to account for the dynamic navbar */
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #fafafa;
+            color: #111111;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, .logo, .btn, .nav-links a, .power-statement, .toast-popup {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Abstract Background Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .blob-1 { top: 5%; left: -10%; width: 50vw; height: 50vw; max-width: 500px; max-height: 500px; background: #e2e8f0; }
+        .blob-2 { top: 40%; right: -10%; width: 60vw; height: 60vw; max-width: 600px; max-height: 600px; background: #f1f5f9; animation-delay: -5s; }
+        .blob-3 { bottom: 5%; left: 15%; width: 45vw; height: 45vw; max-width: 450px; max-height: 450px; background: #eef2f6; animation-duration: 12s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-30px) scale(1.05); }
+        }
+
+        /* Animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphic Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+            padding: 0.75rem 5%; /* Tighten padding slightly when scrolled */
+        }
+
+        .logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; transition: opacity 0.3s ease; z-index: 1002; }
+        .logo:hover { opacity: 0.7; }
+        
+        /* DYNAMIC LOGO SIZING */
+        .logo img { 
+            height: 120px; /* Much bigger initial size */
+            width: auto; 
+            display: block; 
+            mix-blend-mode: multiply; 
+            transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        
+        /* Shrink logo when scrolling down to save screen space */
+        nav.scrolled .logo img { 
+            height: 75px; 
+        }
+
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a {
+            text-decoration: none;
+            color: #111;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #111; transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Mobile Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            z-index: 1002;
+        }
+        .bar {
+            width: 25px;
+            height: 2px;
+            background-color: #111;
+            transition: all 0.3s ease;
+            transform-origin: left center;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
+            max-width: 900px;
+        }
+
+        .hero .power-statement {
+            font-size: clamp(1.1rem, 2vw, 1.25rem);
+            color: #444;
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background-color: #111;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid #111;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .btn:hover { background-color: #fff; color: #111; transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); }
+
+        /* General Section Styles */
+        section:not(.hero) {
+            padding: 5.5rem 5%; 
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            margin-bottom: 3.5rem; 
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid #ffffff;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border-radius: 24px;
+            padding: 2.5rem; 
+            width: 100%;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+
+        /* Projects Section */
+        .project-card {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            background: #ffffff; 
+        }
+        .project-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06); }
+        
+        .project-header-top {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        
+        /* STRICTLY CONTROLLED LOGO BOX */
+        .project-logo-box {
+            width: 72px; 
+            height: 72px;
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03); 
+            flex-shrink: 0;
+            padding: 0;
+        }
+        
+        .project-logo-box img {
+            width: 32px; 
+            height: 32px; 
+            object-fit: contain;
+            mix-blend-mode: multiply;
+            /* Reset transition and height override for this specific img */
+            transition: none;
+        }
+        nav.scrolled .project-logo-box img { height: 32px; }
+        
+        .project-title-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .project-title-wrapper h3 { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            margin: 0;
+            line-height: 1;
+            letter-spacing: -0.5px;
+        }
+        
+        .project-desc { 
+            font-size: 1.05rem; 
+            color: #555; 
+            margin-bottom: 1.5rem; 
+            line-height: 1.6; 
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        .badge.active { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        
+        .tech-stack {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tech-pill {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px; 
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #475569;
+            transition: all 0.2s ease;
+        }
+        .tech-pill:hover { border-color: #94a3b8; color: #0f172a; }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 2rem;
+            max-width: 1000px; 
+            margin: 0 auto;
+        }
+
+        .feature-card .icon {
+            width: 48px; height: 48px; background: #111; color: #fff; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+        }
+        .feature-card h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+        .feature-card p { color: #555; font-size: 0.95rem; line-height: 1.6; }
+
+        /* Roadmap Timeline */
+        .timeline { max-width: 800px; margin: 0 auto; position: relative; }
+        .timeline::before { content: ''; position: absolute; top: 2rem; bottom: 2rem; left: 24px; width: 2px; background: #eaeaea; }
+        .timeline-item { position: relative; padding-left: 4.5rem; margin-bottom: 2.5rem; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        
+        .timeline-dot {
+            position: absolute; left: 17px; top: 2rem; width: 16px; height: 16px;
+            border-radius: 50%; background: #fff; border: 3px solid #111; z-index: 2;
+        }
+        .timeline-dot.completed { border-color: #111; background: #111; }
+        .timeline-dot.active { border-color: #3b82f6; background: #3b82f6; box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.15); animation: pulse 2s infinite; }
+        .timeline-dot.upcoming { border-color: #d1d5db; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .badge.completed { background: #111; color: #fff; margin-bottom: 1rem;}
+        .badge.upcoming { background: #f3f4f6; color: #666; margin-bottom: 1rem;}
+
+        /* --- NEW SPLIT-LAYOUT CONTACT SECTION --- */
+        #contact { 
+            padding: 6rem 5%; 
+            background: #fafafa;
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .contact-left {
+            max-width: 500px;
+        }
+
+        /* Beautiful Serif Heading */
+        .contact-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .contact-desc {
+            font-size: 1.1rem;
+            color: #475569;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .email-block {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .email-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3b82f6;
+            background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .email-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.2rem;
+        }
+
+        .email-address {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* Right Form Card */
+        .contact-form-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.08), 0 0 0 1px rgba(0,0,0,0.02);
+            width: 100%;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group-modern {
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+        .form-row .form-group-modern { margin-bottom: 0; }
+
+        .form-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.6rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .form-control-modern {
+            width: 100%;
+            padding: 1.1rem 1.25rem;
+            font-size: 1rem;
+            background-color: #f8fafc; /* Very light gray */
+            border: 2px solid transparent;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            color: #0f172a;
+        }
+        
+        .form-control-modern::placeholder { color: #94a3b8; font-weight: 400; }
+        
+        .form-control-modern:focus {
+            outline: none;
+            background-color: #ffffff;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+        }
+
+        textarea.form-control-modern {
+            min-height: 150px;
+            resize: none !important;
+        }
+
+        .btn-gradient {
+            width: 100%;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); /* Deep vibrant purple/blue */
+            color: #fff;
+            border: none;
+            padding: 1.2rem;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
+        }
+
+        .error-msg {
+            color: #dc2626; font-size: 0.85rem; font-weight: 500;
+            display: none; margin-top: 0.4rem; text-align: left; padding-left: 0.2rem;
+        }
+
+        /* Success Toast Popup */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px; background: #111; color: #fff;
+            padding: 1rem 1.5rem; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: flex; align-items: center; gap: 0.75rem; font-weight: 600; font-size: 0.95rem;
+            transform: translateY(150px); opacity: 0; visibility: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 9999;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; visibility: visible; }
+        .toast svg { color: #22c55e; }
+
+        footer { text-align: center; padding: 2rem 5%; border-top: 1px solid rgba(0,0,0,0.05); color: #888; font-size: 0.9rem; }
+
+        /* Media Queries for Responsive Design (Mobile, Tablet) */
+        @media (max-width: 950px) {
+            .contact-container { grid-template-columns: 1fr; gap: 3rem; }
+            .contact-left { max-width: 100%; text-align: center; }
+            .email-block { justify-content: center; }
+        }
+
+        @media (max-width: 800px) {
+            .features-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            section:not(.hero) { padding: 4rem 5%; } 
+            .hero { padding-top: 80px; }
+            .glass-card, .contact-form-card { padding: 2rem 1.5rem; }
+            
+            /* Mobile Logo Adjustments */
+            .logo img { height: 90px; }
+            nav.scrolled .logo img { height: 60px; }
+            
+            .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
+            .contact-heading { font-size: 2.5rem; }
+
+            .timeline-item { padding-left: 3rem; }
+            .timeline-dot { left: 9px; width: 14px; height: 14px; top: 2.2rem; }
+            .timeline::before { left: 15px; }
+            
+            .menu-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+                transform: translateY(-100%);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 1001;
+            }
+            .nav-links.active { transform: translateY(0); }
+            .nav-links a { font-size: 1.5rem; font-weight: 600; }
+            
+            .menu-toggle.is-active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.is-active .bar:nth-child(1) { transform: rotate(45deg); width: 27px; }
+            .menu-toggle.is-active .bar:nth-child(3) { transform: rotate(-45deg); width: 27px; }
+
+            .toast { right: 15px; left: 15px; bottom: 15px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <nav class="fade-up">
+        <a href="#" class="logo">
+            <img src="frylabs-logo.png" alt="FryLabs Studio Logo">
+        </a>
+        
+        <!-- Hamburger Icon -->
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#projects">Projects</a>
+            <a href="#features">Architecture</a>
+            <a href="#status">Roadmap</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="fade-up" style="transition-delay: 0.1s;">Building Systems from Zero.</h1>
+        <p class="power-statement fade-up" style="transition-delay: 0.15s; margin-bottom: 2.5rem;">FryLabs is an independent systems engineering studio focused on operating systems, kernel research, and low-level performance tooling.</p>
+        
+        <div class="fade-up" style="transition-delay: 0.2s;">
+            <a href="#projects" class="btn">View Current Projects</a>
+        </div>
+    </section>
+
+    <!-- Current Projects Section -->
+    <section id="projects">
+        <h2 class="section-title fade-up">Current Projects</h2>
+        <div class="glass-card project-card fade-up">
+            
+            <!-- Sleek, App-Style Header -->
+            <div class="project-header-top">
+                <div class="project-logo-box">
+                    <!-- Controlled Image Size -->
+                    <img src="frisp-os-preview.png" alt="FRISP OS Logo">
+                </div>
+                <div class="project-title-wrapper">
+                    <h3>FRISP OS</h3>
+                    <span class="badge active">In Active Development</span>
+                </div>
+            </div>
+
+            <p class="project-desc">A research-driven microkernel operating system engineered from first principles. Engineered to explore strict memory isolation, preemptive multi-tasking, and zero-overhead hardware communication.</p>
+            
+            <div class="tech-stack" style="justify-content: flex-start; margin-bottom: 0;">
+                <span class="tech-pill">C / C++</span>
+                <span class="tech-pill">x86_64 Assembly</span>
+                <span class="tech-pill">Bare Metal</span>
+                <span class="tech-pill">Custom Bootloader</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="features">
+        <h2 class="section-title fade-up">FRISP OS Core Architecture</h2>
+        <div class="features-grid">
+            <div class="glass-card feature-card fade-up">
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+                </div>
+                <h3>Microkernel Design</h3>
+                <p>Engineered around a minimal, modular microkernel architecture. Only essential subsystems — task scheduling, interrupt handling, and memory management — operate in kernel space. Device drivers and file systems run in isolated user space.<br><br><strong style="color: #111; display: block;">Designed for fault containment and long-term scalability.</strong></p>
+            </div>
+            
+            <div class="glass-card feature-card fade-up" style="transition-delay: 0.1s;">
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <h3>Strict Memory Safety</h3>
+                <p>Built with hardware-enforced memory isolation and privilege separation. Implements paging, segmented ring protection (Ring 0 / Ring 3), and controlled system call gates to prevent unauthorized memory access.<br><br><strong style="color: #111; display: block;">Security is foundational — not optional.</strong></p>
+            </div>
+            
+            <div class="glass-card feature-card fade-up" style="transition-delay: 0.2s;">
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <h3>Zero-Overhead Drivers</h3>
+                <p>Hardware communication is implemented close to the metal using optimized C and Assembly. Direct interrupt-driven I/O and precise memory mapping ensure maximum throughput without the bloat of generic driver stacks.<br><br><strong style="color: #111; display: block;">Performance without compromise.</strong></p>
+            </div>
+
+            <div class="glass-card feature-card fade-up" style="transition-delay: 0.3s;">
+                <div class="icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                </div>
+                <h3>Modular IPC System</h3>
+                <p>A lightweight, message-based inter-process communication layer enables secure interaction between kernel services and userland modules. Isolated services operate without ever compromising kernel stability.<br><br><strong style="color: #111; display: block;">Designed for scalability and secure interaction.</strong></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="status">
+        <h2 class="section-title fade-up">Development Roadmap</h2>
+        <div class="timeline">
+            
+            <div class="timeline-item fade-up">
+                <div class="timeline-dot active"></div>
+                <div class="timeline-card">
+                    <span class="badge active" style="margin-bottom: 1rem;">Active: Foundation Stage</span>
+                    <h3>Phase 0: Boot Validation & Toolchain</h3>
+                    <p>Setting up the bare-metal build system, establishing strict Multiboot compliance, generating ISOs, and verifying kernel entry execution and VGA output using GRUB.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-up" style="transition-delay: 0.1s;">
+                <div class="timeline-dot upcoming"></div>
+                <div class="timeline-card">
+                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
+                    <h3>Phase 1: Architecture & Boot Flow</h3>
+                    <p>Deepening boot flow understanding. Implementing manual GDT setup, verifying long-mode transition, and designing a clean, formalized entry point architecture.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-up" style="transition-delay: 0.2s;">
+                <div class="timeline-dot upcoming"></div>
+                <div class="timeline-card">
+                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
+                    <h3>Phase 2: Core Kernel Implementation</h3>
+                    <p>Writing the core kernel mechanics, including preparing the IDT (Interrupt Descriptor Table), advanced memory management (paging), and process scheduling.</p>
+                </div>
+            </div>
+
+            <div class="timeline-item fade-up" style="transition-delay: 0.3s;">
+                <div class="timeline-dot upcoming"></div>
+                <div class="timeline-card">
+                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
+                    <h3>Phase 3: Drivers & File System</h3>
+                    <p>Developing essential hardware drivers (keyboard, display, storage) and implementing a custom, highly-efficient file system.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item fade-up" style="transition-delay: 0.4s;">
+                <div class="timeline-dot upcoming"></div>
+                <div class="timeline-card">
+                    <span class="badge upcoming" style="margin-bottom: 1rem;">Upcoming</span>
+                    <h3>Phase 4: Userland & IPC</h3>
+                    <p>Constructing the user-space environment, system calls, and a secure, message-based Inter-Process Communication (IPC) layer.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About Developer Section -->
+    <section id="about">
+        <h2 class="section-title fade-up">Lead Engineer</h2>
+        <div class="glass-card project-card fade-up" style="text-align: center; max-width: 700px; padding: 3.5rem 2rem;">
+            
+            <!-- Sleek Minimalist Avatar with Gradient -->
+            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #0f172a 0%, #334155 100%); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; margin: 0 auto 1.5rem auto; font-family: 'Plus Jakarta Sans', sans-serif; box-shadow: 0 10px 25px rgba(0,0,0,0.15), inset 0 2px 4px rgba(255,255,255,0.1);">
+                AD
+            </div>
+            
+            <h3 style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.3rem; font-family: 'Plus Jakarta Sans', sans-serif;">Abhinav Das</h3>
+            <p style="color: #2563eb; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem;">Computer Science & Design Undergraduate</p>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1.5rem;">Exploring Systems Engineering & Visual Design</p>
+            
+            <p class="project-desc" style="margin-bottom: 2.5rem; max-width: 550px; margin-left: auto; margin-right: auto;">
+                Curious about systems, design, and how software works at its lowest level. Currently exploring operating system development, microkernel concepts, and bare-metal programming while continuing to grow in graphic design and visual engineering.<br><br>Building, learning, experimenting &mdash; one layer at a time.
+            </p>
+            
+            <!-- Link to Personal Portfolio -->
+            <a href="https://abhinavdas-sigma.vercel.app/" target="_blank" rel="noopener noreferrer" class="btn" style="background-color: transparent; color: #111; border: 2px solid #111;">
+                Visit Personal Portfolio 
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block; vertical-align: middle; margin-left: 6px; margin-top: -2px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- NEW SPLIT-LAYOUT CONTACT SECTION -->
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            
+            <!-- Left Side Typography & Info -->
+            <div class="contact-left fade-up">
+                <h2 class="contact-heading">Let's build something <span class="text-gradient">brilliant.</span></h2>
+                <p class="contact-desc">Have a project in mind, a freelance opportunity, or just want to chat about systems and tech? My inbox is always open.</p>
+                
+                <div class="email-block">
+                    <div class="email-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    </div>
+                    <div>
+                        <span class="email-label">Send an email</span>
+                        <span class="email-address">Direct Message Me</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side Form Card -->
+            <div class="contact-right fade-up" style="transition-delay: 0.15s;">
+                <div class="contact-form-card">
+                    <form id="contactForm" action="https://formspree.io/f/xkovqboq" method="POST">
+                        
+                        <div class="form-row">
+                            <div class="form-group-modern">
+                                <label class="form-label" for="name">Name</label>
+                                <input type="text" name="name" id="name" class="form-control-modern" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group-modern">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control-modern" placeholder="john@example.com" required>
+                                <div id="emailError" class="error-msg">Please enter a valid email address.</div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-modern" style="margin-bottom: 2rem;">
+                            <label class="form-label" for="message">Message</label>
+                            <textarea name="message" id="message" class="form-control-modern" placeholder="How can I help you today?" required></textarea>
+                        </div>
+
+                        <button type="submit" id="submitBtn" class="btn-gradient">
+                            Send Message 
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="fade-up">
+            &copy; 2026 FryLabs Studio. Building Systems from Zero.
+        </div>
+    </footer>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="toast">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        Message sent successfully.
+    </div>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener("scroll", () => {
+            const nav = document.querySelector("nav");
+            if (window.scrollY > 50) {
+                nav.classList.add("scrolled");
+            } else {
+                nav.classList.remove("scrolled");
+            }
+        });
+
+        // Mobile Menu Logic
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenu.addEventListener('click', () => {
+            mobileMenu.classList.toggle('is-active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('is-active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Intersection Observer for Animations
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+        });
+
+        // AJAX Form Submission & Email Validation
+        const form = document.getElementById('contactForm');
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('emailError');
+        const submitBtn = document.getElementById('submitBtn');
+        const toast = document.getElementById('toast');
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+
+            // Validate Email
+            if (!emailPattern.test(emailInput.value)) {
+                emailError.style.display = 'block';
+                emailInput.style.borderColor = '#dc2626';
+                return;
+            } else {
+                emailError.style.display = 'none';
+                emailInput.style.borderColor = 'transparent';
+            }
+
+            // Visual loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'Sending...';
+            submitBtn.style.opacity = '0.8';
+            submitBtn.style.pointerEvents = 'none';
+
+            // Send via fetch
+            const formData = new FormData(form);
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    toast.classList.add('show');
+                    form.reset();
+                    
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                    }, 4000);
+                } else {
+                    alert("Oops! There was a problem submitting your form");
+                }
+            } catch (error) {
+                alert("Network error. Please try again later.");
+            } finally {
+                // Restore button
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.pointerEvents = 'auto';
+            }
+        });
+
+        // Clear error styling when user types
+        emailInput.addEventListener('input', () => {
+            if (emailError.style.display === 'block') {
+                emailError.style.display = 'none';
+                emailInput.style.borderColor = 'transparent';
+            }
+        });
+    </script>
+</body>
+</html>
